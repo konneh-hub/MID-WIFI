@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Courses | MID-WIFI Admin</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="container">
+        <h1>Courses Management</h1>
+        <a href="/admin" class="button">Dashboard</a>
+      </div>
+    </header>
+    <main class="container admin-content">
+      <section class="panel-block">
+        <h2>Create Course</h2>
+        <form action="/admin/courses" method="POST" class="form-grid">
+          <label>Course Title</label>
+          <input name="title" required />
+          <label>Code</label>
+          <input name="code" required />
+          <label>Department</label>
+          <select name="department" required>
+            <% departments.forEach(dept => { %>
+              <option value="<%= dept._id %>"><%= dept.name %></option>
+            <% }) %>
+          </select>
+          <label>Description</label>
+          <textarea name="description" rows="3"></textarea>
+          <label>Credits</label>
+          <input type="number" name="credits" min="1" value="3" />
+          <button type="submit">Add Course</button>
+        </form>
+      </section>
+      <section class="panel-block">
+        <h2>Existing Courses</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Title</th><th>Code</th><th>Department</th></tr>
+            </thead>
+            <tbody>
+              <% courses.forEach(course => { %>
+                <tr>
+                  <td><%= course.title %></td>
+                  <td><%= course.code %></td>
+                  <td><%= course.department?.name || 'Unassigned' %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

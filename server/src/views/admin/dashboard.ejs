@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MID-WIFI Admin Dashboard</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="container">
+        <h1>MID-WIFI Admin</h1>
+        <form action="/admin/logout" method="POST">
+          <button class="logout-button">Logout</button>
+        </form>
+      </div>
+    </header>
+    <main class="container admin-grid">
+      <nav class="admin-nav">
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/news">News</a>
+        <a href="/admin/courses">Courses</a>
+        <a href="/admin/departments">Departments</a>
+        <a href="/admin/events">Events</a>
+        <a href="/admin/admissions">Admissions</a>
+      </nav>
+      <section class="admin-panel">
+        <h2>Summary</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3><%= counts.newsCount %></h3>
+            <p>News items</p>
+          </div>
+          <div class="stat-card">
+            <h3><%= counts.courseCount %></h3>
+            <p>Courses</p>
+          </div>
+          <div class="stat-card">
+            <h3><%= counts.departmentCount %></h3>
+            <p>Departments</p>
+          </div>
+          <div class="stat-card">
+            <h3><%= counts.eventCount %></h3>
+            <p>Events</p>
+          </div>
+          <div class="stat-card">
+            <h3><%= counts.applicationCount %></h3>
+            <p>Applications</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

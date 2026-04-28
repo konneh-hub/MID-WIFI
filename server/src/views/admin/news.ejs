@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage News | MID-WIFI Admin</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="container">
+        <h1>News Management</h1>
+        <a href="/admin" class="button">Dashboard</a>
+      </div>
+    </header>
+    <main class="container admin-content">
+      <section class="panel-block">
+        <h2>Create News</h2>
+        <form action="/admin/news" method="POST" class="form-grid">
+          <label>Title</label>
+          <input name="title" required />
+          <label>Summary</label>
+          <textarea name="summary" rows="2" required></textarea>
+          <label>Content</label>
+          <textarea name="content" rows="4" required></textarea>
+          <button type="submit">Add News</button>
+        </form>
+      </section>
+      <section class="panel-block">
+        <h2>Existing News</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Title</th><th>Published</th><th>Summary</th></tr>
+            </thead>
+            <tbody>
+              <% news.forEach(item => { %>
+                <tr>
+                  <td><%= item.title %></td>
+                  <td><%= item.publishedAt.toDateString() %></td>
+                  <td><%= item.summary %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Departments | MID-WIFI Admin</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="container">
+        <h1>Departments Management</h1>
+        <a href="/admin" class="button">Dashboard</a>
+      </div>
+    </header>
+    <main class="container admin-content">
+      <section class="panel-block">
+        <h2>Create Department</h2>
+        <form action="/admin/departments" method="POST" class="form-grid">
+          <label>Department Name</label>
+          <input name="name" required />
+          <label>Description</label>
+          <textarea name="description" rows="3"></textarea>
+          <button type="submit">Add Department</button>
+        </form>
+      </section>
+      <section class="panel-block">
+        <h2>Existing Departments</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <% departments.forEach(dept => { %>
+                <tr>
+                  <td><%= dept.name %></td>
+                  <td><%= dept.description %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
