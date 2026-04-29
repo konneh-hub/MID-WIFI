@@ -2,40 +2,49 @@ function FQAPage() {
   return (
     <div>
       <section className="card">
+        <div className="program-card-icon">❓</div>
         <h1>Frequently Asked Questions</h1>
-        <p>Find answers to common questions about MID-WIFI University, admission, courses, events, and website usage.</p>
+        <p className="muted">Answers to common questions about admissions, courses, and university services.</p>
       </section>
       <section className="card" style={{ marginTop: '24px' }}>
+        <div className="program-card-icon">📝</div>
         <h2>How do I apply for admission?</h2>
-        <p>Visit the Admissions page to review the application process and submit your information. Applications are accepted year-round for most programs.</p>
+        <p className="muted">Visit Admissions page to review process and submit applications year-round.</p>
       </section>
       <section className="card" style={{ marginTop: '24px' }}>
+        <div className="program-card-icon">📚</div>
         <h2>Where can I find course details?</h2>
-        <p>Course information is available on the Courses page, including descriptions, credits, prerequisites, and departmental affiliation.</p>
+        <p className="muted">Course information available on Courses page with descriptions and prerequisites.</p>
       </section>
       <section className="card" style={{ marginTop: '24px' }}>
+        <div className="program-card-icon">📞</div>
         <h2>How do I contact the university?</h2>
-        <p>Use the Contact page to send a message directly to our admissions and support team. You can also call us at +1 555 0100 or email info@midwifi.edu.</p>
+        <p className="muted">Use Contact page or call +1 555 0100. Email: info@midwifi.edu.</p>
       </section>
       <section className="card" style={{ marginTop: '24px' }}>
+        <div className="program-card-icon">💰</div>
         <h2>What is the tuition cost?</h2>
-        <p>Tuition varies by program and residency status. Please visit our Tuition page or contact the financial aid office for detailed information and payment options.</p>
+        <p className="muted">Varies by program. Visit Tuition page or contact financial aid office.</p>
       </section>
       <section className="card" style={{ marginTop: '24px' }}>
+        <div className="program-card-icon">💻</div>
         <h2>Are there online courses available?</h2>
-        <p>Yes, MID-WIFI University offers a variety of online and hybrid courses. Check the Courses page for current online offerings and enrollment instructions.</p>
+        <p className="muted">Yes, check Courses page for online and hybrid offerings.</p>
       </section>
       <section className="card" style={{ marginTop: '24px' }}>
+        <div className="program-card-icon">🎓</div>
         <h2>How do I access student services?</h2>
-        <p>Current students can access services through the Student Portal. Prospective students should contact the admissions office for guidance on available resources.</p>
+        <p className="muted">Current students use Student Portal. Prospective students contact admissions.</p>
       </section>
       <section className="card" style={{ marginTop: '24px' }}>
+        <div className="program-card-icon">📅</div>
         <h2>What events are happening on campus?</h2>
-        <p>Check the Events page for upcoming campus events, workshops, and activities. We also send newsletters with event updates.</p>
+        <p className="muted">Check Events page for upcoming activities and newsletters.</p>
       </section>
       <section className="card" style={{ marginTop: '24px' }}>
+        <div className="program-card-icon">🔧</div>
         <h2>How do I report a website issue?</h2>
-        <p>If you encounter any problems with our website, please use the Contact page to report the issue. Include details about your browser, device, and the steps that led to the problem.</p>
+        <p className="muted">Use Contact page with browser details and steps to reproduce.</p>
       </section>
     </div>
   );

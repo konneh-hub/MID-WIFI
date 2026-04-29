@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Programs | MID-WIFI Admin</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="container">
+        <h1>Programs Management</h1>
+        <a href="/admin" class="button">Dashboard</a>
+      </div>
+    </header>
+    <main class="container admin-content">
+      <section class="panel-block">
+        <h2>Create Program</h2>
+        <form action="/admin/programs" method="POST" class="form-grid">
+          <label>Program Title</label>
+          <input name="title" required />
+          <label>Code</label>
+          <input name="code" required />
+          <label>Type</label>
+          <select name="type" required>
+            <option value="undergraduate">Undergraduate</option>
+            <option value="masters">Masters</option>
+            <option value="postgraduate">Postgraduate</option>
+            <option value="phd">PhD</option>
+            <option value="doctorate">Doctorate</option>
+            <option value="diploma">Diploma</option>
+            <option value="certificate">Certificate</option>
+          </select>
+          <label>Duration</label>
+          <input type="number" name="duration" min="1" required />
+          <label>Duration Unit</label>
+          <select name="durationUnit" required>
+            <option value="years">Years</option>
+            <option value="months">Months</option>
+          </select>
+          <label>Faculty</label>
+          <select name="faculty">
+            <option value="">Select Faculty</option>
+            <% faculties.forEach(faculty => { %>
+              <option value="<%= faculty._id %>"><%= faculty.name %></option>
+            <% }) %>
+          </select>
+          <label>Department</label>
+          <select name="department">
+            <option value="">Select Department</option>
+            <% departments.forEach(dept => { %>
+              <option value="<%= dept._id %>"><%= dept.name %></option>
+            <% }) %>
+          </select>
+          <label>Description</label>
+          <textarea name="description" rows="3"></textarea>
+          <label>Requirements</label>
+          <textarea name="requirements" rows="3"></textarea>
+          <button type="submit">Add Program</button>
+        </form>
+      </section>
+      <section class="panel-block">
+        <h2>Existing Programs</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Title</th><th>Code</th><th>Type</th><th>Duration</th><th>Faculty</th><th>Department</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              <% programs.forEach(program => { %>
+                <tr>
+                  <td><%= program.title %></td>
+                  <td><%= program.code %></td>
+                  <td><%= program.type %></td>
+                  <td><%= program.duration %> <%= program.durationUnit %></td>
+                  <td><%= program.faculty?.name || 'Unassigned' %></td>
+                  <td><%= program.department?.name || 'Unassigned' %></td>
+                  <td>
+                    <button class="edit-program-btn" data-id="<%= program._id %>" data-title="<%= program.title.replace(/"/g, '&quot;') %>" data-code="<%= program.code.replace(/"/g, '&quot;') %>" data-type="<%= program.type %>" data-duration="<%= program.duration %>" data-durationUnit="<%= program.durationUnit %>" data-faculty="<%= program.faculty?._id || '' %>" data-department="<%= program.department?._id || '' %>" data-description="<%= program.description?.replace(/"/g, '&quot;') || '' %>" data-requirements="<%= program.requirements?.replace(/"/g, '&quot;') || '' %>">Edit</button>
+                    <form action="/admin/programs/<%= program._id %>?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Delete this program?')">
+                      <button type="submit">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="panel-block" id="edit-program-section" style="display:none;">
+        <h2>Edit Program</h2>
+        <form id="edit-program-form" action="" method="POST" class="form-grid">
+          <input type="hidden" name="_method" value="PUT" />
+          <input type="hidden" id="edit-program-id" name="id" />
+          <label>Program Title</label>
+          <input id="edit-program-title" name="title" required />
+          <label>Code</label>
+          <input id="edit-program-code" name="code" required />
+          <label>Type</label>
+          <select id="edit-program-type" name="type" required>
+            <option value="undergraduate">Undergraduate</option>
+            <option value="masters">Masters</option>
+            <option value="postgraduate">Postgraduate</option>
+            <option value="phd">PhD</option>
+            <option value="doctorate">Doctorate</option>
+            <option value="diploma">Diploma</option>
+            <option value="certificate">Certificate</option>
+          </select>
+          <label>Duration</label>
+          <input type="number" id="edit-program-duration" name="duration" min="1" required />
+          <label>Duration Unit</label>
+          <select id="edit-program-durationUnit" name="durationUnit" required>
+            <option value="years">Years</option>
+            <option value="months">Months</option>
+          </select>
+          <label>Faculty</label>
+          <select id="edit-program-faculty" name="faculty">
+            <option value="">Select Faculty</option>
+            <% faculties.forEach(faculty => { %>
+              <option value="<%= faculty._id %>"><%= faculty.name %></option>
+            <% }) %>
+          </select>
+          <label>Department</label>
+          <select id="edit-program-department" name="department">
+            <option value="">Select Department</option>
+            <% departments.forEach(dept => { %>
+              <option value="<%= dept._id %>"><%= dept.name %></option>
+            <% }) %>
+          </select>
+          <label>Description</label>
+          <textarea id="edit-program-description" name="description" rows="3"></textarea>
+          <label>Requirements</label>
+          <textarea id="edit-program-requirements" name="requirements" rows="3"></textarea>
+          <button type="submit">Update Program</button>
+          <button type="button" onclick="cancelProgramEdit()">Cancel</button>
+        </form>
+      </section>
+    </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.edit-program-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const title = this.dataset.title;
+            const code = this.dataset.code;
+            const type = this.dataset.type;
+            const duration = this.dataset.duration;
+            const durationUnit = this.dataset.durationUnit;
+            const faculty = this.dataset.faculty;
+            const department = this.dataset.department;
+            const description = this.dataset.description;
+            const requirements = this.dataset.requirements;
+            document.getElementById('edit-program-id').value = id;
+            document.getElementById('edit-program-title').value = title;
+            document.getElementById('edit-program-code').value = code;
+            document.getElementById('edit-program-type').value = type;
+            document.getElementById('edit-program-duration').value = duration;
+            document.getElementById('edit-program-durationUnit').value = durationUnit;
+            document.getElementById('edit-program-faculty').value = faculty;
+            document.getElementById('edit-program-department').value = department;
+            document.getElementById('edit-program-description').value = description;
+            document.getElementById('edit-program-requirements').value = requirements;
+            document.getElementById('edit-program-form').action = '/admin/programs/' + id + '?_method=PUT';
+            document.getElementById('edit-program-section').style.display = 'block';
+            window.scrollTo(0, document.getElementById('edit-program-section').offsetTop);
+          });
+        });
+      });
+
+      function cancelProgramEdit() {
+        document.getElementById('edit-program-section').style.display = 'none';
+      }
+    </script>
+  </body>
+</html>

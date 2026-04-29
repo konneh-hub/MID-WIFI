@@ -29,19 +29,59 @@
         <div class="table-scroll">
           <table>
             <thead>
-              <tr><th>Name</th><th>Description</th></tr>
+              <tr><th>Name</th><th>Description</th><th>Actions</th></tr>
             </thead>
             <tbody>
               <% departments.forEach(dept => { %>
                 <tr>
                   <td><%= dept.name %></td>
                   <td><%= dept.description %></td>
+                  <td>
+                    <button class="edit-dept-btn" data-id="<%= dept._id %>" data-name="<%= dept.name.replace(/"/g, '&quot;') %>" data-description="<%= dept.description?.replace(/"/g, '&quot;') || '' %>">Edit</button>
+                    <form action="/admin/departments/<%= dept._id %>?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Delete this department?')">
+                      <button type="submit">Delete</button>
+                    </form>
+                  </td>
                 </tr>
               <% }) %>
             </tbody>
           </table>
         </div>
       </section>
+      <section class="panel-block" id="edit-dept-section" style="display:none;">
+        <h2>Edit Department</h2>
+        <form id="edit-dept-form" action="" method="POST" class="form-grid">
+          <input type="hidden" name="_method" value="PUT" />
+          <input type="hidden" id="edit-dept-id" name="id" />
+          <label>Department Name</label>
+          <input id="edit-dept-name" name="name" required />
+          <label>Description</label>
+          <textarea id="edit-dept-description" name="description" rows="3"></textarea>
+          <button type="submit">Update Department</button>
+          <button type="button" onclick="cancelDeptEdit()">Cancel</button>
+        </form>
+      </section>
     </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.edit-dept-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const name = this.dataset.name;
+            const description = this.dataset.description;
+            document.getElementById('edit-dept-id').value = id;
+            document.getElementById('edit-dept-name').value = name;
+            document.getElementById('edit-dept-description').value = description;
+            document.getElementById('edit-dept-form').action = '/admin/departments/' + id + '?_method=PUT';
+            document.getElementById('edit-dept-section').style.display = 'block';
+            window.scrollTo(0, document.getElementById('edit-dept-section').offsetTop);
+          });
+        });
+      });
+
+      function cancelDeptEdit() {
+        document.getElementById('edit-dept-section').style.display = 'none';
+      }
+    </script>
   </body>
 </html>

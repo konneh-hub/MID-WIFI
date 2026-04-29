@@ -39,7 +39,7 @@
         <div class="table-scroll">
           <table>
             <thead>
-              <tr><th>Title</th><th>Code</th><th>Department</th></tr>
+              <tr><th>Title</th><th>Code</th><th>Department</th><th>Actions</th></tr>
             </thead>
             <tbody>
               <% courses.forEach(course => { %>
@@ -47,12 +47,68 @@
                   <td><%= course.title %></td>
                   <td><%= course.code %></td>
                   <td><%= course.department?.name || 'Unassigned' %></td>
+                  <td>
+                    <button class="edit-course-btn" data-id="<%= course._id %>" data-title="<%= course.title.replace(/"/g, '&quot;') %>" data-code="<%= course.code %>" data-department="<%= course.department?._id %>" data-description="<%= course.description?.replace(/"/g, '&quot;') || '' %>" data-credits="<%= course.credits || 3 %>">Edit</button>
+                    <form action="/admin/courses/<%= course._id %>?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Delete this course?')">
+                      <button type="submit">Delete</button>
+                    </form>
+                  </td>
                 </tr>
               <% }) %>
             </tbody>
           </table>
         </div>
       </section>
+      <section class="panel-block" id="edit-course-section" style="display:none;">
+        <h2>Edit Course</h2>
+        <form id="edit-course-form" action="" method="POST" class="form-grid">
+          <input type="hidden" name="_method" value="PUT" />
+          <input type="hidden" id="edit-course-id" name="id" />
+          <label>Course Title</label>
+          <input id="edit-course-title" name="title" required />
+          <label>Code</label>
+          <input id="edit-course-code" name="code" required />
+          <label>Department</label>
+          <select id="edit-course-department" name="department" required>
+            <% departments.forEach(dept => { %>
+              <option value="<%= dept._id %>"><%= dept.name %></option>
+            <% }) %>
+          </select>
+          <label>Description</label>
+          <textarea id="edit-course-description" name="description" rows="3"></textarea>
+          <label>Credits</label>
+          <input type="number" id="edit-course-credits" name="credits" min="1" value="3" />
+          <button type="submit">Update Course</button>
+          <button type="button" onclick="cancelCourseEdit()">Cancel</button>
+        </form>
+      </section>
     </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.edit-course-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const title = this.dataset.title;
+            const code = this.dataset.code;
+            const department = this.dataset.department;
+            const description = this.dataset.description;
+            const credits = this.dataset.credits;
+            document.getElementById('edit-course-id').value = id;
+            document.getElementById('edit-course-title').value = title;
+            document.getElementById('edit-course-code').value = code;
+            document.getElementById('edit-course-department').value = department;
+            document.getElementById('edit-course-description').value = description;
+            document.getElementById('edit-course-credits').value = credits;
+            document.getElementById('edit-course-form').action = '/admin/courses/' + id + '?_method=PUT';
+            document.getElementById('edit-course-section').style.display = 'block';
+            window.scrollTo(0, document.getElementById('edit-course-section').offsetTop);
+          });
+        });
+      });
+
+      function cancelCourseEdit() {
+        document.getElementById('edit-course-section').style.display = 'none';
+      }
+    </script>
   </body>
 </html>

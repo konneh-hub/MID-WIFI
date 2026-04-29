@@ -27,6 +27,8 @@ services:
     build: ./client
     ports:
       - "3000:80"
+    environment:
+      - VITE_API_BASE=http://server:4000/api
     depends_on:
       - server
 

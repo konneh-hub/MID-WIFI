@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Faculties | MID-WIFI Admin</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="container">
+        <h1>Faculties Management</h1>
+        <a href="/admin" class="button">Dashboard</a>
+      </div>
+    </header>
+    <main class="container admin-content">
+      <section class="panel-block">
+        <h2>Create Faculty</h2>
+        <form action="/admin/faculties" method="POST" class="form-grid">
+          <label>Faculty Name</label>
+          <input name="name" required />
+          <label>Description</label>
+          <textarea name="description" rows="3"></textarea>
+          <label>Dean</label>
+          <input name="dean" />
+          <label>Established Date</label>
+          <input name="established" type="date" />
+          <button type="submit">Add Faculty</button>
+        </form>
+      </section>
+      <section class="panel-block">
+        <h2>Existing Faculties</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Description</th><th>Dean</th><th>Established</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              <% faculties.forEach(faculty => { %>
+                <tr>
+                  <td><%= faculty.name %></td>
+                  <td><%= faculty.description %></td>
+                  <td><%= faculty.dean %></td>
+                  <td><%= faculty.established ? faculty.established.toDateString() : '' %></td>
+                  <td>
+                    <button class="edit-faculty-btn" data-id="<%= faculty._id %>" data-name="<%= faculty.name.replace(/"/g, '&quot;') %>" data-description="<%= faculty.description?.replace(/"/g, '&quot;') || '' %>" data-dean="<%= faculty.dean?.replace(/"/g, '&quot;') || '' %>" data-established="<%= faculty.established ? faculty.established.toISOString().split('T')[0] : '' %>">Edit</button>
+                    <form action="/admin/faculties/<%= faculty._id %>?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Delete this faculty?')">
+                      <button type="submit">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="panel-block" id="edit-faculty-section" style="display:none;">
+        <h2>Edit Faculty</h2>
+        <form id="edit-faculty-form" action="" method="POST" class="form-grid">
+          <input type="hidden" name="_method" value="PUT" />
+          <input type="hidden" id="edit-faculty-id" name="id" />
+          <label>Faculty Name</label>
+          <input id="edit-faculty-name" name="name" required />
+          <label>Description</label>
+          <textarea id="edit-faculty-description" name="description" rows="3"></textarea>
+          <label>Dean</label>
+          <input id="edit-faculty-dean" name="dean" />
+          <label>Established Date</label>
+          <input id="edit-faculty-established" name="established" type="date" />
+          <button type="submit">Update Faculty</button>
+          <button type="button" onclick="cancelFacultyEdit()">Cancel</button>
+        </form>
+      </section>
+    </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.edit-faculty-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const name = this.dataset.name;
+            const description = this.dataset.description;
+            const dean = this.dataset.dean;
+            const established = this.dataset.established;
+            document.getElementById('edit-faculty-id').value = id;
+            document.getElementById('edit-faculty-name').value = name;
+            document.getElementById('edit-faculty-description').value = description;
+            document.getElementById('edit-faculty-dean').value = dean;
+            document.getElementById('edit-faculty-established').value = established;
+            document.getElementById('edit-faculty-form').action = '/admin/faculties/' + id + '?_method=PUT';
+            document.getElementById('edit-faculty-section').style.display = 'block';
+            window.scrollTo(0, document.getElementById('edit-faculty-section').offsetTop);
+          });
+        });
+      });
+
+      function cancelFacultyEdit() {
+        document.getElementById('edit-faculty-section').style.display = 'none';
+      }
+    </script>
+  </body>
+</html>

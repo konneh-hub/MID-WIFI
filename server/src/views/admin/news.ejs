@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Manage News | MID-WIFI Admin</title>
+    <title>Manage News | MIDWIFERY Admin</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
@@ -25,13 +25,26 @@
           <textarea name="content" rows="4" required></textarea>
           <button type="submit">Add News</button>
         </form>
+      <section class="panel-block" id="edit-section" style="display:none;">
+        <h2>Edit News</h2>
+        <form id="edit-form" action="" method="POST" class="form-grid">
+          <input type="hidden" name="_method" value="PUT" />
+          <input type="hidden" id="edit-id" name="id" />
+          <label>Title</label>
+          <input id="edit-title" name="title" required />
+          <label>Summary</label>
+          <textarea id="edit-summary" name="summary" rows="2" required></textarea>
+          <label>Content</label>
+          <textarea id="edit-content" name="content" rows="4" required></textarea>
+          <button type="submit">Update News</button>
+          <button type="button" onclick="cancelEdit()">Cancel</button>
+        </form>
       </section>
-      <section class="panel-block">
         <h2>Existing News</h2>
         <div class="table-scroll">
           <table>
             <thead>
-              <tr><th>Title</th><th>Published</th><th>Summary</th></tr>
+              <tr><th>Title</th><th>Published</th><th>Summary</th><th>Actions</th></tr>
             </thead>
             <tbody>
               <% news.forEach(item => { %>
@@ -39,6 +52,12 @@
                   <td><%= item.title %></td>
                   <td><%= item.publishedAt.toDateString() %></td>
                   <td><%= item.summary %></td>
+                  <td>
+                    <button class="edit-btn" data-id="<%= item._id %>" data-title="<%= item.title.replace(/"/g, '&quot;') %>" data-summary="<%= item.summary.replace(/"/g, '&quot;') %>" data-content="<%= item.content.replace(/"/g, '&quot;') %>">Edit</button>
+                    <form action="/admin/news/<%= item._id %>?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Delete this news item?')">
+                      <button type="submit">Delete</button>
+                    </form>
+                  </td>
                 </tr>
               <% }) %>
             </tbody>
@@ -46,5 +65,28 @@
         </div>
       </section>
     </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const title = this.dataset.title;
+            const summary = this.dataset.summary;
+            const content = this.dataset.content;
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-title').value = title;
+            document.getElementById('edit-summary').value = summary;
+            document.getElementById('edit-content').value = content;
+            document.getElementById('edit-form').action = '/admin/news/' + id + '?_method=PUT';
+            document.getElementById('edit-section').style.display = 'block';
+            window.scrollTo(0, document.getElementById('edit-section').offsetTop);
+          });
+        });
+      });
+
+      function cancelEdit() {
+        document.getElementById('edit-section').style.display = 'none';
+      }
+    </script>
   </body>
 </html>

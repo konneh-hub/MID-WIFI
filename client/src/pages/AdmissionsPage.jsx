@@ -1,24 +1,30 @@
 function AdmissionsPage() {
   return (
     <div>
-      <section className="card">
-        <h1>Admissions Information</h1>
-        <p>Join MID-WIFI University by exploring our admissions process, program requirements, and application timeline.</p>
-      </section>
-      <section className="grid-row" style={{ marginTop: '24px' }}>
-        <div className="card">
-          <h3>Application process</h3>
-          <p>Complete the online application, upload supporting transcripts, and review deadlines for your chosen program.</p>
-        </div>
-        <div className="card">
-          <h3>Eligibility</h3>
-          <p>Students must meet academic and English proficiency requirements. Contact our admissions team if you need guidance.</p>
+      <section className="section-title">
+        <div>
+          <h1>Admissions Information</h1>
+          <p>Join MIDWIFERY University by exploring our admissions process and requirements.</p>
         </div>
       </section>
-      <section className="note-box" style={{ marginTop: '24px' }}>
-        <h3>Next steps</h3>
-        <p>Visit our Contact page to request more information or ask about scholarship and financial aid opportunities.</p>
-      </section>
+
+      <div className="section-grid">
+        <article className="card">
+          <div className="program-card-icon">📝</div>
+          <h3>Application Process</h3>
+          <p className="muted">Complete online application, upload transcripts, and meet deadlines. Our streamlined process makes it easy to join our community.</p>
+        </article>
+        <article className="card">
+          <div className="program-card-icon">📋</div>
+          <h3>Eligibility Requirements</h3>
+          <p className="muted">Meet academic and English requirements. Contact admissions for personalized guidance on your application journey.</p>
+        </article>
+        <article className="card">
+          <div className="program-card-icon">🎓</div>
+          <h3>Next Steps</h3>
+          <p className="muted">Visit our Contact page for more information about scholarships and financial aid. We're here to support your educational goals.</p>
+        </article>
+      </div>
     </div>
   );
 }

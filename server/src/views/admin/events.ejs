@@ -33,7 +33,7 @@
         <div class="table-scroll">
           <table>
             <thead>
-              <tr><th>Title</th><th>Date</th><th>Location</th></tr>
+              <tr><th>Title</th><th>Date</th><th>Location</th><th>Actions</th></tr>
             </thead>
             <tbody>
               <% events.forEach(event => { %>
@@ -41,12 +41,60 @@
                   <td><%= event.title %></td>
                   <td><%= new Date(event.date).toDateString() %></td>
                   <td><%= event.location %></td>
+                  <td>
+                    <button class="edit-event-btn" data-id="<%= event._id %>" data-title="<%= event.title.replace(/"/g, '&quot;') %>" data-date="<%= event.date.toISOString().split('T')[0] %>" data-location="<%= event.location.replace(/"/g, '&quot;') %>" data-description="<%= event.description.replace(/"/g, '&quot;') %>">Edit</button>
+                    <form action="/admin/events/<%= event._id %>?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Delete this event?')">
+                      <button type="submit">Delete</button>
+                    </form>
+                  </td>
                 </tr>
               <% }) %>
             </tbody>
           </table>
         </div>
       </section>
+      <section class="panel-block" id="edit-event-section" style="display:none;">
+        <h2>Edit Event</h2>
+        <form id="edit-event-form" action="" method="POST" class="form-grid">
+          <input type="hidden" name="_method" value="PUT" />
+          <input type="hidden" id="edit-event-id" name="id" />
+          <label>Title</label>
+          <input id="edit-event-title" name="title" required />
+          <label>Date</label>
+          <input type="date" id="edit-event-date" name="date" required />
+          <label>Location</label>
+          <input id="edit-event-location" name="location" required />
+          <label>Description</label>
+          <textarea id="edit-event-description" name="description" rows="3" required></textarea>
+          <button type="submit">Update Event</button>
+          <button type="button" onclick="cancelEventEdit()">Cancel</button>
+        </form>
+      </section>
     </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.edit-event-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const title = this.dataset.title;
+            const date = this.dataset.date;
+            const location = this.dataset.location;
+            const description = this.dataset.description;
+            document.getElementById('edit-event-id').value = id;
+            document.getElementById('edit-event-title').value = title;
+            document.getElementById('edit-event-date').value = date;
+            document.getElementById('edit-event-location').value = location;
+            document.getElementById('edit-event-description').value = description;
+            document.getElementById('edit-event-form').action = '/admin/events/' + id + '?_method=PUT';
+            document.getElementById('edit-event-section').style.display = 'block';
+            window.scrollTo(0, document.getElementById('edit-event-section').offsetTop);
+          });
+        });
+      });
+
+      function cancelEventEdit() {
+        document.getElementById('edit-event-section').style.display = 'none';
+      }
+    </script>
   </body>
 </html>

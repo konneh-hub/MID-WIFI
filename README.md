@@ -1,4 +1,4 @@
-# MID-WIFI University Website System
+# MIDWIFERY University Website System
 
 A full-stack university website system with:
 - React public website
