@@ -12,7 +12,7 @@ function PartnershipsPage() {
         <article className="card">
           <div className="program-card-icon">🌍</div>
           <h3>International Collaborations</h3>
-          <p className="muted">MID-WIFI University maintains partnerships with leading institutions across the globe, including exchange programs, joint research initiatives, and collaborative degree programs.</p>
+          <p className="muted">MIDWIFERY University maintains partnerships with leading institutions across the globe, including exchange programs, joint research initiatives, and collaborative degree programs.</p>
         </article>
 
         <article className="card">

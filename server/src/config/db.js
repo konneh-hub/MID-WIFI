@@ -5,7 +5,7 @@ dotenv.config();
 
 export async function connectDatabase() {
   const host = process.env.MONGO_HOST || 'localhost';
-  const uri = process.env.MONGODB_URI || `mongodb://admin:password@${host}:27017/midwifi`;
+  const uri = process.env.MONGODB_URI || `mongodb://admin:password@${host}:27017/midwifery`;
   
   try {
     await mongoose.connect(uri, { 

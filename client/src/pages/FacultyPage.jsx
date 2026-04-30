@@ -136,7 +136,7 @@ function FacultyPage() {
 
                   <div className="faculty-dept-preview">
                     <div className="preview-title">Departments</div>
-                    {facultyDepts.length > 0 ? (
+                    {Array.isArray(facultyDepts) && facultyDepts.length > 0 ? (
                       <ul className="preview-list">
                         {facultyDepts.slice(0, 4).map(dept => (
                           <li key={dept._id}>

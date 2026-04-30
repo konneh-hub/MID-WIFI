@@ -28,7 +28,7 @@ function NewsPage() {
           <p className="hero-eyebrow">News & Announcements</p>
           <h1>University updates, events, and campus stories</h1>
           <p>
-            Stay informed with the latest news from MIDWIFI University, including announcements,
+            Stay informed with the latest news from MIDWIFERY University, including announcements,
             research progress, community events, and student achievements.
           </p>
         </div>

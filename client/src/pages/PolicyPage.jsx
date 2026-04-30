@@ -3,7 +3,7 @@ function PolicyPage() {
     <div>
       <section className="card">
         <h1>Privacy Policy</h1>
-        <p>This page provides an overview of MID-WIFI University policies, including privacy, data protection, and website usage policies.</p>
+        <p>This page provides an overview of MIDWIFERY University policies, including privacy, data protection, and website usage policies.</p>
         <p><strong>Last updated:</strong> April 28, 2026</p>
       </section>
       <section className="card" style={{ marginTop: '24px' }}>

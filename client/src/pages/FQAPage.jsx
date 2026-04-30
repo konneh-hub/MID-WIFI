@@ -19,7 +19,7 @@ function FQAPage() {
       <section className="card" style={{ marginTop: '24px' }}>
         <div className="program-card-icon">📞</div>
         <h2>How do I contact the university?</h2>
-        <p className="muted">Use Contact page or call +1 555 0100. Email: info@midwifi.edu.</p>
+        <p className="muted">Use Contact page or call +1 555 0100. Email: info@midwifery.edu.</p>
       </section>
       <section className="card" style={{ marginTop: '24px' }}>
         <div className="program-card-icon">💰</div>

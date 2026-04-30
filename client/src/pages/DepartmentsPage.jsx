@@ -95,7 +95,7 @@ function DepartmentsPage() {
                   <p className="department-description">
                     {dept.description || 'A dedicated department focused on advancing healthcare education and research.'}
                   </p>
-                  {deptPrograms.length > 0 && (
+                  {Array.isArray(deptPrograms) && deptPrograms.length > 0 && (
                     <div className="programs-section">
                       <h4 className="programs-title">Programs Offered</h4>
                       <ul className="programs-list">

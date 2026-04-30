@@ -18,8 +18,8 @@ services:
       - MONGODB_URI=mongodb://admin:password@mongo:27017/admin
       - SESSION_SECRET=your-session-secret
       - CLIENT_URL=http://localhost:3000
-      - ADMIN_EMAIL=admin@midwifi.edu
-      - ADMIN_PASSWORD=MidWifi123!
+      - ADMIN_EMAIL=admin@midwifery.edu
+      - ADMIN_PASSWORD=MidWifery123!
     depends_on:
       - mongo
 

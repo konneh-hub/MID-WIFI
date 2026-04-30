@@ -14,20 +14,20 @@ dotenv.config();
 async function seedData() {
   try {
     // Use localhost for connecting from host machine, or docker hostname from container
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://admin:password@localhost:27017/midwifi?authSource=admin';
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://admin:password@localhost:27017/midwifery?authSource=admin';
     await mongoose.connect(mongoUri);
     console.log('Connected to MongoDB for seeding...');
 
     // Create default admin user
     console.log('Creating admin user...');
     try {
-      const hashedPassword = await bcrypt.hash('admin123', 10);
+      const hashedPassword = await bcrypt.hash('MidWifery123!', 10);
       console.log('Password hashed');
       const adminUser = await User.findOneAndUpdate(
-        { email: 'admin@midwifi.edu' },
+        { email: 'admin@midwifery.edu' },
         {
           name: 'Administrator',
-          email: 'admin@midwifi.edu',
+          email: 'admin@midwifery.edu',
           password: hashedPassword,
           role: 'admin'
         },

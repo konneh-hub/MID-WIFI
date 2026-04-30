@@ -12,7 +12,7 @@
 ### 4. Test login [PENDING]
 
 **Default Admin Credentials:**
-- Email: admin@midwifi.edu
-- Password: MidWifi123!
+- Email: admin@midwifery.edu
+- Password: MidWifery123!
 
 **Root Cause:** No MongoDB running -> login query throws -> 500 JSON error.

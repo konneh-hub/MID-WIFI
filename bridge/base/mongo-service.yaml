@@ -4,13 +4,13 @@ apiVersion: v1
 kind: Service
 metadata:
     name: mongo-published
-    namespace: midwifi
+    namespace: midwifery
     labels:
-        com.docker.compose.project: midwifi
+        com.docker.compose.project: midwifery
         com.docker.compose.service: mongo
 spec:
     selector:
-        com.docker.compose.project: midwifi
+        com.docker.compose.project: midwifery
         com.docker.compose.service: mongo
     ports:
         - name: mongo-27017

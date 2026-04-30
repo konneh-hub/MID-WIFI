@@ -4,34 +4,34 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: server
-    namespace: midwifi
+    namespace: midwifery
     labels:
-        com.docker.compose.project: midwifi
+        com.docker.compose.project: midwifery
         com.docker.compose.service: server
 spec:
     replicas: 1
     selector:
         matchLabels:
-            com.docker.compose.project: midwifi
+            com.docker.compose.project: midwifery
             com.docker.compose.service: server
     strategy:
         type: Recreate
     template:
         metadata:
             labels:
-                com.docker.compose.project: midwifi
+                com.docker.compose.project: midwifery
                 com.docker.compose.service: server
                 com.docker.compose.network.default: "true"
         spec:
             containers:
                 - name: server
-                  image: midwifi-server
+                  image: midwifery-server
                   imagePullPolicy: IfNotPresent
                   env:
                     - name: ADMIN_EMAIL
-                      value: "admin@midwifi.edu"
+                      value: "admin@midwifery.edu"
                     - name: ADMIN_PASSWORD
-                      value: "MidWifi123!"
+                      value: "midwifery123!"
                     - name: CLIENT_URL
                       value: "http://localhost:3000"
                     - name: MONGODB_URI

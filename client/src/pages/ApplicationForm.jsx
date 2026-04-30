@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../services/api.js';
 
 const ApplicationForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -16,7 +16,7 @@ const ApplicationForm = () => {
   useEffect(() => {
     const fetchApplication = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/application', { withCredentials: true });
+        const response = await api.get('/application', { withCredentials: true });
         if (response.data) {
           setApplication(response.data);
           setCurrentStep(response.data.step || 1);
@@ -55,7 +55,7 @@ const ApplicationForm = () => {
         documents: formData.documents
       };
 
-      const response = await axios.post('http://localhost:4000/api/application', dataToSend, { withCredentials: true });
+      const response = await api.post('/application', dataToSend, { withCredentials: true });
       setApplication(response.data);
     } catch (error) {
       console.error('Error saving application:', error);
@@ -106,7 +106,7 @@ const ApplicationForm = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:4000/api/application/submit', {}, { withCredentials: true });
+      const response = await api.post('/application/submit', {}, { withCredentials: true });
       navigate('/dashboard');
     } catch (error) {
       console.error('Error submitting application:', error);

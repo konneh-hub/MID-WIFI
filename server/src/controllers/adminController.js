@@ -10,23 +10,40 @@ import Program from '../models/Program.js';
 import Media from '../models/Media.js';
 
 export function loginPage(req, res) {
+  if (req.session?.user?.role === 'admin') {
+    return res.redirect('/admin/dashboard');
+  }
   res.render('admin/login', { error: null });
 }
 
 export async function doLogin(req, res) {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email, role: 'admin' });
-  if (!user) {
-    return res.render('admin/login', { error: 'Invalid credentials' });
-  }
+  try {
+    console.log('Admin login attempt for:', req.body.email);
+    const { email, password } = req.body;
+    const user = await User.findOne({ email, role: 'admin' });
+    console.log('User found:', !!user);
+    if (!user) {
+      console.log('No admin user found with email:', email);
+      return res.render('admin/login', { error: 'Invalid credentials' });
+    }
 
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) {
-    return res.render('admin/login', { error: 'Invalid credentials' });
-  }
+    const validPassword = await bcrypt.compare(password, user.password);
+    console.log('Password valid:', validPassword);
+    if (!validPassword) {
+      console.log('Invalid password for user:', email);
+      return res.render('admin/login', { error: 'Invalid credentials' });
+    }
 
-  req.session.user = { id: user._id, name: user.name, email: user.email, role: user.role };
-  return res.redirect('/admin');
+    req.session.user = { id: user._id, name: user.name, email: user.email, role: user.role };
+    console.log('Session set, redirecting to dashboard');
+    console.log('Session user:', req.session.user);
+    res.redirect('/admin/dashboard');
+    console.log('Redirect called');
+    return;
+  } catch (error) {
+    console.error('Admin login error:', error.message || error);
+    return res.status(500).render('admin/login', { error: 'Unable to log in right now. Please try again later.' });
+  }
 }
 
 export function logoutPage(req, res) {

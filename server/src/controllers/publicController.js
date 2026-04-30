@@ -16,7 +16,7 @@ export const setPublicDbConnected = (connected) => {
 
 // Mock data for offline mode
 const mockNews = [
-  { _id: '1', title: 'Welcome to MID-WIFI University', summary: 'New academic year begins!', publishedAt: new Date() }
+  { _id: '1', title: 'Welcome to MIDWIFERY University', summary: 'New academic year begins!', publishedAt: new Date() }
 ];
 
 const mockCourses = [

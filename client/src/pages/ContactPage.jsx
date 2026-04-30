@@ -43,7 +43,7 @@ function ContactPage() {
       <section className="contact-hero">
         <div className="contact-hero-copy">
           <p className="eyebrow">Contact Us</p>
-          <h1>Get in touch with MIDWIFI University</h1>
+          <h1>Get in touch with MIDWIFERY University</h1>
           <p>
             Reach out to our admissions team, student services, or campus administration for
             questions about programs, applications, events, and support resources.
@@ -66,7 +66,7 @@ function ContactPage() {
               <span className="info-icon">✉️</span>
               <div>
                 <p className="info-label">Email</p>
-                <a href="mailto:info@midwifi.edu">info@midwifi.edu</a>
+                <a href="mailto:info@midwifery.edu">info@midwifery.edu</a>
               </div>
             </div>
             <div className="info-item">

@@ -70,7 +70,11 @@ app.use(methodOverride('_method'));
 const allowedOrigins = [
   process.env.CLIENT_URL || 'http://localhost:3000',
   'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
   'http://127.0.0.1:5173',
+  'http://127.0.0.1:5174',
+  'http://127.0.0.1:5175',
   'http://127.0.0.1:3000',
   'http://localhost:3000'
 ];
@@ -86,7 +90,7 @@ app.use(cors({
 }));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'midwifi-secret',
+  secret: process.env.SESSION_SECRET || 'midwifery-secret',
   resave: false,
   saveUninitialized: false,
   store: new session.MemoryStore(),
@@ -98,7 +102,7 @@ app.use('/api/auth', authRouter);
 app.use('/admin', adminRouter);
 
 app.get('/', (req, res) => {
-  res.send('MID-WIFI API is running. Visit /admin for the admin dashboard.');
+  res.send('Midwifery API is running. Visit /admin for the admin dashboard.');
 });
 
 app.use((err, req, res, next) => {
@@ -107,7 +111,7 @@ app.use((err, req, res, next) => {
 });
 
 const server = app.listen(PORT, () => {
-  console.log(`MID-WIFI server running on http://localhost:${PORT}`);
+  console.log(`Midwifery server running on http://localhost:${PORT}`);
 });
 
 server.on('error', (error) => {

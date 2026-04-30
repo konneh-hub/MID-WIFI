@@ -6,7 +6,7 @@ dotenv.config();
 
 async function checkUsers() {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://admin:password@mongo:27017/midwifi?authSource=admin';
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://admin:password@mongo:27017/midwifery?authSource=admin';
     await mongoose.connect(mongoUri);
     console.log('Connected to MongoDB');
 

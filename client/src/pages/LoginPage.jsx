@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../services/api.js';
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,14 +22,33 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:4000/api/auth/student/login', {
-        email: event.target.email.value,
-        password: event.target.password.value
-      }, { withCredentials: true });
+      const email = event.target.email.value;
+      const password = event.target.password.value;
 
-      if (response.data.message === 'Login successful') {
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        navigate('/dashboard');
+      // Check if this is an admin login
+      if (email === 'admin@midwifery.edu') {
+        // Call admin API endpoint
+        const response = await api.post('/auth/login', {
+          email,
+          password
+        }, { withCredentials: true });
+
+        if (response.data.message === 'Login successful') {
+          // Redirect to admin dashboard
+          window.location.href = 'http://localhost:5002/admin/dashboard';
+          return;
+        }
+      } else {
+        // Student login
+        const response = await api.post('/auth/student/login', {
+          email,
+          password
+        }, { withCredentials: true });
+
+        if (response.data.message === 'Login successful') {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          navigate('/dashboard');
+        }
       }
     } catch (error) {
       setErrorMessage(error.response?.data?.message || 'Login failed');
@@ -53,6 +72,7 @@ function LoginPage() {
           <div>
             <h2 id="login-card-title">Login</h2>
             <p>Access your university account</p>
+            <p className="login-note">Admin login: admin@midwifery.edu</p>
           </div>
         </div>
 

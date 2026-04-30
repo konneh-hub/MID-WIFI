@@ -1,0 +1,8 @@
+#! 0-midwifery-namespace.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: midwifery
+    labels:
+        com.docker.compose.project: midwifery

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../services/api.js';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -15,7 +15,7 @@ const Dashboard = () => {
         setUser(storedUser);
 
         // Fetch application from API
-        const response = await axios.get('http://localhost:4000/api/application', { withCredentials: true });
+        const response = await api.get('/application', { withCredentials: true });
         setApplication(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);

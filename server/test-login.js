@@ -2,12 +2,12 @@ import fetch from 'node-fetch';
 
 async function testLogin() {
   try {
-    const response = await fetch('http://localhost:4000/admin/login', {
+    const response = await fetch('http://localhost:5002/admin/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: 'email=admin@midwifi.edu&password=admin123',
+      body: 'email=admin@midwifery.edu&password=MidWifery123!',
       redirect: 'manual'
     });
 

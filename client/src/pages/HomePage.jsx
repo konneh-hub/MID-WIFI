@@ -145,7 +145,7 @@ function HomePage() {
           />
         </div>
         <div className="content-section">
-          {courses.length ? (
+          {Array.isArray(courses) && courses.length > 0 ? (
             courses.slice(0, 6).map(course => (
               <Card
                 key={course._id}
@@ -224,16 +224,18 @@ function HomePage() {
         title="Stay informed with the latest campus updates."
       >
         <div className="content-section">
-          {news.slice(0, 4).map(item => (
-            <Card
-              key={item._id}
-              image={photo1Img}
-              title={item.title}
-              description={item.summary || 'Read the latest announcement from the university community.'}
-              link="/news"
-              className="image-card"
-            />
-          ))}
+          {news && news.length ? (
+            news.slice(0, 4).map(item => (
+              <Card
+                key={item._id}
+                image={photo1Img}
+                title={item.title}
+                description={item.summary || 'Read the latest announcement from the university community.'}
+                link="/news"
+                className="image-card"
+              />
+            ))
+          ) : null}
         </div>
       </Section>
 

@@ -27,7 +27,8 @@ router.get('/login', loginPage);
 router.post('/login', doLogin);
 router.post('/logout', logoutPage);
 
-router.get('/', renderDashboard);
+router.get('/', requireAdmin, (req, res) => res.redirect('/admin/dashboard'));
+router.get('/dashboard', requireAdmin, renderDashboard);
 router.get('/news', requireAdmin, renderNews);
 router.post('/news', requireAdmin, createNewsItem);
 router.put('/news/:id', requireAdmin, updateNewsItem);

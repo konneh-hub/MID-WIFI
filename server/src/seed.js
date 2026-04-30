@@ -6,7 +6,7 @@ dotenv.config();
 
 export async function initAdminUser() {
   try {
-    const email = process.env.ADMIN_EMAIL || 'admin@midwifi.edu';
+    const email = process.env.ADMIN_EMAIL || 'admin@midwifery.edu';
     const existing = await User.findOne({ email }).catch(err => {
       console.error('Error checking for existing admin:', err.message);
       return null;
@@ -16,11 +16,11 @@ export async function initAdminUser() {
       return;
     }
 
-    const password = process.env.ADMIN_PASSWORD || 'MidWifi123!';
+    const password = process.env.ADMIN_PASSWORD || 'MidWifery123!';
     const hashedPassword = await bcrypt.hash(password, 12);
 
     await User.create({
-      name: 'MID-WIFI Admin',
+      name: 'MIDWIFERY Admin',
       email,
       password: hashedPassword,
       role: 'admin'

@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:4000/api';
+const API_BASE = import.meta.env.DEV
+  ? import.meta.env.VITE_API_BASE || 'http://localhost:5002/api'
+  : import.meta.env.VITE_API_BASE || '/api';
 
 export const api = axios.create({
   baseURL: API_BASE,
@@ -12,27 +14,27 @@ export const api = axios.create({
 });
 
 export function fetchNews() {
-  return api.get('/news').then(res => res.data);
+  return api.get('/news').then(res => Array.isArray(res.data) ? res.data : []).catch(() => []);
 }
 
 export function fetchCourses() {
-  return api.get('/courses').then(res => res.data);
+  return api.get('/courses').then(res => Array.isArray(res.data) ? res.data : []).catch(() => []);
 }
 
 export function fetchDepartments() {
-  return api.get('/departments').then(res => res.data);
+  return api.get('/departments').then(res => Array.isArray(res.data) ? res.data : []).catch(() => []);
 }
 
 export function fetchEvents() {
-  return api.get('/events').then(res => res.data);
+  return api.get('/events').then(res => Array.isArray(res.data) ? res.data : []).catch(() => []);
 }
 
 export function fetchFaculties() {
-  return api.get('/faculties').then(res => res.data);
+  return api.get('/faculties').then(res => Array.isArray(res.data) ? res.data : []).catch(() => []);
 }
 
 export function fetchPrograms() {
-  return api.get('/programs').then(res => res.data);
+  return api.get('/programs').then(res => Array.isArray(res.data) ? res.data : []).catch(() => []);
 }
 
 export function fetchMedia() {

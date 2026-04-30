@@ -18,7 +18,7 @@ function PublicationsPage() {
         <article className="card">
           <div className="program-card-icon">📖</div>
           <h3>Research Journals</h3>
-          <p className="muted">MID-WIFI University publishes several academic journals covering various disciplines and interdisciplinary topics.</p>
+          <p className="muted">MIDWIFERY University publishes several academic journals covering various disciplines and interdisciplinary topics.</p>
         </article>
 
         <article className="card">
