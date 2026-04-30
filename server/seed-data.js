@@ -6,7 +6,8 @@ import Event from './src/models/Event.js';
 import Faculty from './src/models/Faculty.js';
 import Program from './src/models/Program.js';
 import User from './src/models/User.js';
-import bcrypt from 'bcrypt';
+import Media from './src/models/Media.js';
+import bcrypt from 'bcryptjs';
 
 dotenv.config();
 
@@ -260,6 +261,39 @@ async function seedData() {
       }
     ]);
     console.log(`✓ Created ${programs.length} programs`);
+
+    // Create media
+    const mediaItems = await Media.insertMany([
+      {
+        title: 'Campus Welcome Event',
+        description: 'Freshmen orientation and welcome ceremony',
+        category: 'Campus Life',
+        fileUrl: '/uploads/sample-campus.jpg', // placeholder
+        fileType: 'image'
+      },
+      {
+        title: 'Research Symposium',
+        description: 'Annual research presentation by faculty and students',
+        category: 'Academic Events',
+        fileUrl: '/uploads/sample-research.jpg',
+        fileType: 'image'
+      },
+      {
+        title: 'Community Outreach Program',
+        description: 'Volunteering at local schools and charities',
+        category: 'Community Impact',
+        fileUrl: '/uploads/sample-community.jpg',
+        fileType: 'image'
+      },
+      {
+        title: 'Graduation Ceremony 2025',
+        description: 'Celebrating our graduates',
+        category: 'Academic Events',
+        fileUrl: '/uploads/sample-graduation.mp4',
+        fileType: 'video'
+      }
+    ]);
+    console.log(`✓ Created ${mediaItems.length} media items`);
 
     console.log('\n✅ All seed data created successfully!');
     await mongoose.disconnect();

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Media | MIDWIFERY Admin</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="container">
+        <h1>Media Gallery Management</h1>
+        <a href="/admin" class="button">Dashboard</a>
+      </div>
+    </header>
+    <main class="container admin-content">
+      <section class="panel-block">
+        <h2>Upload Media</h2>
+        <form action="/admin/media/upload" method="POST" enctype="multipart/form-data" class="form-grid">
+          <label>File</label>
+          <input type="file" name="file" accept="image/*,video/*" required />
+          <label>Title</label>
+          <input name="title" required />
+          <label>Description</label>
+          <textarea name="description" rows="2"></textarea>
+          <label>Category</label>
+          <select name="category" required>
+            <option value="Campus Life">Campus Life</option>
+            <option value="Academic Events">Academic Events</option>
+            <option value="Community Impact">Community Impact</option>
+          </select>
+          <label>Type</label>
+          <select name="fileType" required>
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+          </select>
+          <button type="submit">Upload Media</button>
+        </form>
+      </section>
+      <section class="panel-block" id="edit-section" style="display:none;">
+        <h2>Edit Media</h2>
+        <form id="edit-form" action="" method="POST" class="form-grid">
+          <input type="hidden" name="_method" value="PUT" />
+          <input type="hidden" id="edit-id" name="id" />
+          <label>Title</label>
+          <input id="edit-title" name="title" required />
+          <label>Description</label>
+          <textarea id="edit-description" name="description" rows="2"></textarea>
+          <label>Category</label>
+          <select id="edit-category" name="category" required>
+            <option value="Campus Life">Campus Life</option>
+            <option value="Academic Events">Academic Events</option>
+            <option value="Community Impact">Community Impact</option>
+          </select>
+          <label>Type</label>
+          <select id="edit-fileType" name="fileType" required>
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+          </select>
+          <label>File URL</label>
+          <input id="edit-fileUrl" name="fileUrl" required />
+          <button type="submit">Update Media</button>
+          <button type="button" onclick="cancelEdit()">Cancel</button>
+        </form>
+      </section>
+      <section class="panel-block">
+        <h2>Existing Media</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Title</th><th>Category</th><th>Type</th><th>Uploaded</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              <% media.forEach(item => { %>
+              <tr>
+                <td><%= item.title %></td>
+                <td><%= item.category %></td>
+                <td><%= item.fileType %></td>
+                <td><%= item.uploadedAt.toDateString() %></td>
+                <td>
+                  <button onclick="editMedia('<%= item._id %>', '<%= item.title %>', '<%= item.description %>', '<%= item.category %>', '<%= item.fileType %>', '<%= item.fileUrl %>')">Edit</button>
+                  <form action="/admin/media/<%= item._id %>?_method=DELETE" method="POST" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Delete this media?')">Delete</button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script>
+      function editMedia(id, title, description, category, fileType, fileUrl) {
+        document.getElementById('edit-id').value = id;
+        document.getElementById('edit-title').value = title;
+        document.getElementById('edit-description').value = description;
+        document.getElementById('edit-category').value = category;
+        document.getElementById('edit-fileType').value = fileType;
+        document.getElementById('edit-fileUrl').value = fileUrl;
+        document.getElementById('edit-form').action = `/admin/media/${id}?_method=PUT`;
+        document.getElementById('edit-section').style.display = 'block';
+        document.getElementById('edit-section').scrollIntoView();
+      }
+      function cancelEdit() {
+        document.getElementById('edit-section').style.display = 'none';
+      }
+    </script>
+  </body>
+</html>

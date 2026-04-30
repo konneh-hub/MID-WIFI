@@ -1,0 +1,19 @@
+#! server-service.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Service
+metadata:
+    name: server-published
+    namespace: midwifi
+    labels:
+        com.docker.compose.project: midwifi
+        com.docker.compose.service: server
+spec:
+    selector:
+        com.docker.compose.project: midwifi
+        com.docker.compose.service: server
+    ports:
+        - name: server-4000
+          port: 4000
+          protocol: TCP
+          targetPort: server-4000

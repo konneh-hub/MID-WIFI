@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -13,15 +16,26 @@ function LoginPage() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage('');
     setLoading(true);
 
-    window.setTimeout(() => {
+    try {
+      const response = await axios.post('http://localhost:4000/api/auth/student/login', {
+        email: event.target.email.value,
+        password: event.target.password.value
+      }, { withCredentials: true });
+
+      if (response.data.message === 'Login successful') {
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || 'Login failed');
+    } finally {
       setLoading(false);
-      setErrorMessage('Invalid email or password. Please check your credentials and try again.');
-    }, 1100);
+    }
   };
 
   return (

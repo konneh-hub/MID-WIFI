@@ -35,6 +35,14 @@ export function fetchPrograms() {
   return api.get('/programs').then(res => res.data);
 }
 
+export function fetchMedia() {
+  return api.get('/media').then(res => res.data);
+}
+
+export function fetchMediaByCategory(category) {
+  return api.get(`/media/category/${category}`).then(res => res.data);
+}
+
 export function fetchCounts() {
   return api.get('/counts').then(res => res.data);
 }

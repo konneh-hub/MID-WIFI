@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import News from '../models/News.js';
 import Course from '../models/Course.js';
 import Department from '../models/Department.js';
@@ -7,6 +7,7 @@ import AdmissionApplication from '../models/AdmissionApplication.js';
 import User from '../models/User.js';
 import Faculty from '../models/Faculty.js';
 import Program from '../models/Program.js';
+import Media from '../models/Media.js';
 
 export function loginPage(req, res) {
   res.render('admin/login', { error: null });
@@ -35,21 +36,48 @@ export function logoutPage(req, res) {
 }
 
 export async function renderDashboard(req, res) {
-  const [newsCount, courseCount, departmentCount, eventCount, applicationCount, facultyCount, programCount] = await Promise.all([
-    News.countDocuments(),
-    Course.countDocuments(),
-    Department.countDocuments(),
-    Event.countDocuments(),
-    AdmissionApplication.countDocuments(),
-    Faculty.countDocuments(),
-    Program.countDocuments()
-  ]);
-  res.render('admin/dashboard', { counts: { newsCount, courseCount, departmentCount, eventCount, applicationCount, facultyCount, programCount } });
+  try {
+    console.log('Rendering dashboard');
+    // Use Promise.allSettled to handle individual timeouts
+    const results = await Promise.allSettled([
+      News.countDocuments().catch(() => 0),
+      Course.countDocuments().catch(() => 0),
+      Department.countDocuments().catch(() => 0),
+      Event.countDocuments().catch(() => 0),
+      AdmissionApplication.countDocuments().catch(() => 0),
+      Faculty.countDocuments().catch(() => 0),
+      Program.countDocuments().catch(() => 0),
+      Media.countDocuments().catch(() => 0)
+    ]);
+    
+    const counts = {
+      newsCount: results[0].status === 'fulfilled' ? results[0].value : 0,
+      courseCount: results[1].status === 'fulfilled' ? results[1].value : 0,
+      departmentCount: results[2].status === 'fulfilled' ? results[2].value : 0,
+      eventCount: results[3].status === 'fulfilled' ? results[3].value : 0,
+      applicationCount: results[4].status === 'fulfilled' ? results[4].value : 0,
+      facultyCount: results[5].status === 'fulfilled' ? results[5].value : 0,
+      programCount: results[6].status === 'fulfilled' ? results[6].value : 0,
+      mediaCount: results[7].status === 'fulfilled' ? results[7].value : 0
+    };
+    
+    console.log('Counts:', counts);
+    res.render('admin/dashboard', { counts });
+  } catch (error) {
+    console.error('Error rendering dashboard:', error.message);
+    // Render with zero counts if database is not available
+    res.render('admin/dashboard', { counts: { newsCount: 0, courseCount: 0, departmentCount: 0, eventCount: 0, applicationCount: 0, facultyCount: 0, programCount: 0, mediaCount: 0 } });
+  }
 }
 
 export async function renderNews(req, res) {
-  const news = await News.find().sort({ publishedAt: -1 });
-  res.render('admin/news', { news });
+  try {
+    const news = await News.find().sort({ publishedAt: -1 });
+    res.render('admin/news', { news });
+  } catch (error) {
+    console.error('Error fetching news:', error);
+    res.render('admin/news', { news: [] });
+  }
 }
 
 export async function createNewsItem(req, res) {
@@ -69,9 +97,15 @@ export async function deleteNewsItem(req, res) {
 }
 
 export async function renderCourses(req, res) {
-  const courses = await Course.find().populate('department');
-  const departments = await Department.find();
-  res.render('admin/courses', { courses, departments });
+  try {
+    const courses = await Course.find().populate('department');
+    const departments = await Department.find();
+    res.render('admin/courses', { courses, departments });
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    // Render with empty data if database is not available
+    res.render('admin/courses', { courses: [], departments: [] });
+  }
 }
 
 export async function createCourseItem(req, res) {
@@ -91,8 +125,13 @@ export async function deleteCourseItem(req, res) {
 }
 
 export async function renderDepartments(req, res) {
-  const departments = await Department.find();
-  res.render('admin/departments', { departments });
+  try {
+    const departments = await Department.find();
+    res.render('admin/departments', { departments });
+  } catch (error) {
+    console.error('Error fetching departments:', error);
+    res.render('admin/departments', { departments: [] });
+  }
 }
 
 export async function createDepartmentItem(req, res) {
@@ -112,8 +151,13 @@ export async function deleteDepartmentItem(req, res) {
 }
 
 export async function renderEvents(req, res) {
-  const events = await Event.find().sort({ date: 1 });
-  res.render('admin/events', { events });
+  try {
+    const events = await Event.find().sort({ date: 1 });
+    res.render('admin/events', { events });
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    res.render('admin/events', { events: [] });
+  }
 }
 
 export async function createEventItem(req, res) {
@@ -133,13 +177,23 @@ export async function deleteEventItem(req, res) {
 }
 
 export async function renderAdmissions(req, res) {
-  const applications = await AdmissionApplication.find().sort({ submittedAt: -1 });
-  res.render('admin/admissions', { applications });
+  try {
+    const applications = await AdmissionApplication.find().sort({ submittedAt: -1 });
+    res.render('admin/admissions', { applications });
+  } catch (error) {
+    console.error('Error fetching admissions:', error);
+    res.render('admin/admissions', { applications: [] });
+  }
 }
 
 export async function renderFaculties(req, res) {
-  const faculties = await Faculty.find().sort({ createdAt: -1 });
-  res.render('admin/faculties', { faculties });
+  try {
+    const faculties = await Faculty.find().sort({ createdAt: -1 });
+    res.render('admin/faculties', { faculties });
+  } catch (error) {
+    console.error('Error fetching faculties:', error);
+    res.render('admin/faculties', { faculties: [] });
+  }
 }
 
 export async function createFacultyItem(req, res) {
@@ -159,10 +213,15 @@ export async function deleteFacultyItem(req, res) {
 }
 
 export async function renderPrograms(req, res) {
-  const programs = await Program.find().populate('faculty').populate('department');
-  const faculties = await Faculty.find();
-  const departments = await Department.find();
-  res.render('admin/programs', { programs, faculties, departments });
+  try {
+    const programs = await Program.find().populate('faculty').populate('department');
+    const faculties = await Faculty.find();
+    const departments = await Department.find();
+    res.render('admin/programs', { programs, faculties, departments });
+  } catch (error) {
+    console.error('Error fetching programs:', error);
+    res.render('admin/programs', { programs: [], faculties: [], departments: [] });
+  }
 }
 
 export async function createProgramItem(req, res) {
@@ -179,4 +238,32 @@ export async function updateProgramItem(req, res) {
 export async function deleteProgramItem(req, res) {
   await Program.findByIdAndDelete(req.params.id);
   res.redirect('/admin/programs');
+}
+
+export async function renderMedia(req, res) {
+  try {
+    const media = await Media.find().sort({ uploadedAt: -1 });
+    res.render('admin/media', { media });
+  } catch (error) {
+    console.error('Error fetching media:', error);
+    res.render('admin/media', { media: [] });
+  }
+}
+
+export async function createMediaItem(req, res) {
+  const { title, description, category, fileType } = req.body;
+  const fileUrl = req.file ? `/uploads/${req.file.filename}` : req.body.fileUrl;
+  await Media.create({ title, description, category, fileUrl, fileType });
+  res.redirect('/admin/media');
+}
+
+export async function updateMediaItem(req, res) {
+  const { title, description, category, fileType, fileUrl } = req.body;
+  await Media.findByIdAndUpdate(req.params.id, { title, description, category, fileType, fileUrl });
+  res.redirect('/admin/media');
+}
+
+export async function deleteMediaItem(req, res) {
+  await Media.findByIdAndDelete(req.params.id);
+  res.redirect('/admin/media');
 }

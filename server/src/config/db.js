@@ -4,12 +4,20 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export async function connectDatabase() {
-  const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/midwifi';
+  const host = process.env.MONGO_HOST || 'localhost';
+  const uri = process.env.MONGODB_URI || `mongodb://admin:password@${host}:27017/midwifi`;
+  
   try {
-    await mongoose.connect(uri, { autoIndex: true });
-    console.log('MongoDB connected');
+    await mongoose.connect(uri, { 
+      autoIndex: true,
+      serverSelectionTimeoutMS: 5000,
+      maxPoolSize: 10,
+    });
+    console.log(`MongoDB connected to ${host}:27017`);
+    return true;
   } catch (error) {
-    console.error('MongoDB connection error:', error);
-    process.exit(1);
+    console.error('MongoDB connection error:', error.message);
+    console.log('Server will continue in limited mode...');
+    return false;
   }
 }

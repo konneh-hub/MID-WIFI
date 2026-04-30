@@ -15,7 +15,7 @@ services:
     ports:
       - "4000:4000"
     environment:
-      - MONGODB_URI=mongodb://admin:password@mongo:27017/midwifi?authSource=admin
+      - MONGODB_URI=mongodb://admin:password@mongo:27017/admin
       - SESSION_SECRET=your-session-secret
       - CLIENT_URL=http://localhost:3000
       - ADMIN_EMAIL=admin@midwifi.edu

@@ -19,6 +19,8 @@ import GalleryPage from '../pages/GalleryPage.jsx';
 import AnnouncementsPage from '../pages/AnnouncementsPage.jsx';
 import LoginPage from '../pages/LoginPage.jsx';
 import RegisterPage from '../pages/RegisterPage.jsx';
+import Dashboard from '../pages/Dashboard.jsx';
+import ApplicationForm from '../pages/ApplicationForm.jsx';
 import CoursesPage from '../pages/CoursesPage.jsx';
 import DepartmentsPage from '../pages/DepartmentsPage.jsx';
 import FacultyPage from '../pages/FacultyPage.jsx';
@@ -78,6 +80,8 @@ function AppRoutes() {
           <Route path="/announcements" element={<AnnouncementsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/application" element={<ApplicationForm />} />
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/departments" element={<DepartmentsPage />} />
           <Route path="/faculties" element={<FacultyPage />} />

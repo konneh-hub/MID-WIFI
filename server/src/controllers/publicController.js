@@ -7,8 +7,40 @@ import Program from '../models/Program.js';
 import Student from '../models/Student.js';
 import User from '../models/User.js';
 
+// Check if DB is connected
+let dbConnected = true;
+
+export const setPublicDbConnected = (connected) => {
+  dbConnected = connected;
+};
+
+// Mock data for offline mode
+const mockNews = [
+  { _id: '1', title: 'Welcome to MID-WIFI University', summary: 'New academic year begins!', publishedAt: new Date() }
+];
+
+const mockCourses = [
+  { _id: '1', title: 'Introduction to Computer Science', code: 'CS101', department: { name: 'Computer Science' } }
+];
+
+const mockDepartments = [
+  { _id: '1', name: 'Computer Science' },
+  { _id: '2', name: 'Engineering' }
+];
+
+const mockCounts = {
+  students: 1250,
+  courses: 45,
+  departments: 8,
+  faculty: 120
+};
+
 export async function getNews(req, res) {
   try {
+    if (!dbConnected) {
+      return res.json(mockNews);
+    }
+
     const news = await News.find().sort({ publishedAt: -1 });
     res.json(news);
   } catch (error) {
@@ -19,6 +51,10 @@ export async function getNews(req, res) {
 
 export async function getCourses(req, res) {
   try {
+    if (!dbConnected) {
+      return res.json(mockCourses);
+    }
+
     const courses = await Course.find().populate('department').sort({ createdAt: -1 });
     res.json(courses);
   } catch (error) {
@@ -74,6 +110,10 @@ export async function submitContact(req, res) {
 
 export async function getCounts(req, res) {
   try {
+    if (!dbConnected) {
+      return res.json(mockCounts);
+    }
+
     const [students, lecturers, staffs, programs, courses, departments, faculties, news, events] = await Promise.all([
       Student.countDocuments(),
       User.countDocuments({ role: 'lecturer' }),

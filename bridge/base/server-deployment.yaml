@@ -1,0 +1,43 @@
+#! server-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: server
+    namespace: midwifi
+    labels:
+        com.docker.compose.project: midwifi
+        com.docker.compose.service: server
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: midwifi
+            com.docker.compose.service: server
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: midwifi
+                com.docker.compose.service: server
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: server
+                  image: midwifi-server
+                  imagePullPolicy: IfNotPresent
+                  env:
+                    - name: ADMIN_EMAIL
+                      value: "admin@midwifi.edu"
+                    - name: ADMIN_PASSWORD
+                      value: "MidWifi123!"
+                    - name: CLIENT_URL
+                      value: "http://localhost:3000"
+                    - name: MONGODB_URI
+                      value: "mongodb://admin:password@mongo:27017/admin"
+                    - name: SESSION_SECRET
+                      value: "your-session-secret"
+                  ports:
+                    - name: server-4000
+                      containerPort: 4000

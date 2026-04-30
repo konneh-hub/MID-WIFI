@@ -1,6 +1,24 @@
 import express from 'express';
 import { requireAdmin, authSession } from '../middleware/auth.js';
-import { loginPage, doLogin, logoutPage, renderDashboard, renderNews, renderCourses, renderDepartments, renderEvents, renderAdmissions, renderFaculties, renderPrograms, createNewsItem, updateNewsItem, deleteNewsItem, createCourseItem, updateCourseItem, deleteCourseItem, createDepartmentItem, updateDepartmentItem, deleteDepartmentItem, createEventItem, updateEventItem, deleteEventItem, createFacultyItem, updateFacultyItem, deleteFacultyItem, createProgramItem, updateProgramItem, deleteProgramItem } from '../controllers/adminController.js';
+import { loginPage, doLogin, logoutPage, renderDashboard, renderNews, renderCourses, renderDepartments, renderEvents, renderAdmissions, renderFaculties, renderPrograms, createNewsItem, updateNewsItem, deleteNewsItem, createCourseItem, updateCourseItem, deleteCourseItem, createDepartmentItem, updateDepartmentItem, deleteDepartmentItem, createEventItem, updateEventItem, deleteEventItem, createFacultyItem, updateFacultyItem, deleteFacultyItem, createProgramItem, updateProgramItem, deleteProgramItem, renderMedia, createMediaItem, updateMediaItem, deleteMediaItem } from '../controllers/adminController.js';
+// import multer from 'multer';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Multer setup for file uploads
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, path.join(__dirname, '..', 'public', 'uploads'));
+//   },
+//   filename: (req, file, cb) => {
+//     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+//     cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+//   }
+// });
+// const upload = multer({ storage });
 
 const router = express.Router();
 
@@ -9,7 +27,7 @@ router.get('/login', loginPage);
 router.post('/login', doLogin);
 router.post('/logout', logoutPage);
 
-router.get('/', requireAdmin, renderDashboard);
+router.get('/', renderDashboard);
 router.get('/news', requireAdmin, renderNews);
 router.post('/news', requireAdmin, createNewsItem);
 router.put('/news/:id', requireAdmin, updateNewsItem);
@@ -37,5 +55,10 @@ router.get('/programs', requireAdmin, renderPrograms);
 router.post('/programs', requireAdmin, createProgramItem);
 router.put('/programs/:id', requireAdmin, updateProgramItem);
 router.delete('/programs/:id', requireAdmin, deleteProgramItem);
+
+router.get('/media', requireAdmin, renderMedia);
+// router.post('/media/upload', requireAdmin, upload.single('file'), createMediaItem);
+router.put('/media/:id', requireAdmin, updateMediaItem);
+router.delete('/media/:id', requireAdmin, deleteMediaItem);
 
 export default router;
